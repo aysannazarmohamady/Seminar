@@ -7,7 +7,9 @@ The implementation code is available here: https://colab.research.google.com/dri
 
 **Algorithm implementation steps:**
 After import the data,
-Clean data:
+
+1. Clean data:
+
 “Title” is already clean, But "Date" is not. 
 Date data is in text (i.e. string) format. Changing it to a datetime format.
 Before I can modify the date using code, need to briefly look through the dataset to have a sense of the format of the data.
