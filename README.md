@@ -187,6 +187,10 @@ dfReturnsScore.fillna(0, inplace=True)
 dfReturnsScore2 = dfReturnsScore[(dfReturnsScore['Score(1)'] > 0.5) | (dfReturnsScore['Score(1)'] < -0.5)]
 
 ```
+![image](https://user-images.githubusercontent.com/30371881/215287120-fe7b6b22-539d-47ab-9572-0e2ed8feecd5.png)
+![image](https://user-images.githubusercontent.com/30371881/215287129-2056088d-dadf-4cf9-a453-a26b52c45449.png)
+
+
 
 
 
