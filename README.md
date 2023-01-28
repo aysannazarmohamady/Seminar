@@ -1,6 +1,8 @@
 # Seminar
 **Sentiment analysis of Elon Musk's tweets and its impact on Tesla's stock price Using VADER**
 
+(**VADER** has the advantage of assessing the sentiment of any given text without the need for previous training as we might have to for Machine Learning models.)
+
 The Elon Musk tweets dataset was extracted from seekingalpha.com and the Tesla stock price dataset was extracted from Yahoo Finance.
 
 The implementation code is available here: https://colab.research.google.com/drive/1BPfe5HtIa99GaDkxxYBZUiLrZ-ZRjuQM?usp=sharing
