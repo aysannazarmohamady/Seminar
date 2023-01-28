@@ -120,3 +120,85 @@ else:
 **The next part is churn out a score.**
 
 
+**2. Using VADER to analyse Tesla Headlines**
+2.1. **Install the NLTK library:**
+NLTK stands for Natural Language ToolKit. It is a library that helps manage and analyse languages.
+Need this as the VADER analyser is part of the NLTK library.
+Need to download the VADER Lexicon.
+
+```python
+import nltk
+nltk.download('vader_lexicon')
+```
+**2.2 Run the sentiment analysis**
+
+```python
+from nltk.sentiment.vader import SentimentIntensityAnalyzer as SIA
+
+results = []
+
+for headline in df1['Title']:
+    pol_score = SIA().polarity_scores(headline) # run analysis
+    pol_score['headline'] = headline # add headlines for viewing
+    results.append(pol_score)
+
+results
+```
+Use a loop to pass every headline into our analyser. A sentiment score is assigned to each headline.
+
+```python
+df1['Score'] = pd.DataFrame(results)['compound']
+```
+
+**3.Correlate lagged score index against prices**
+compare the relationship between the TSLA stock returns and our sentiment score. If there is a significant relationship, then sentiment scores might have some predictive value.
+the next steps:
+- Aggregate daily sentiment scores
+- Import TSLA prices and calculate returns
+- Check relationship between lagged score against returns (daily)
+
+
+```python
+df2 = df1.groupby(['New Date']).sum() # creates a daily score by summing the scores of the individual articles in each day
+
+
+dfEodPrice['Date'] = dfEodPrice['Date'].astype('datetime64[ns]') 
+type(dfEodPrice['Date'][1])
+
+
+dfEodPrice2 = dfEodPrice.drop(['Open', 'High','Low','Close','Volume'], axis=1) # drop unwanted rows
+dfEodPrice2.set_index('Date', inplace=True) # set Date coloumn as index
+dfEodPrice2
+
+
+dfEodPrice2['Returns'] = dfEodPrice2['Adj Close']/dfEodPrice2['Adj Close'].shift(1) - 1 # calculate daily returns
+dfEodPrice2
+
+
+df2['Score(1)'] = df2.shift(1)
+df2
+
+dfEodPrice3 = pd.merge(dfEodPrice2[['Returns']], df2[['Score(1)']], left_index=True, right_index=True, how='left')
+dfEodPrice3
+
+dfReturnsScore.fillna(0, inplace=True) 
+# replace NaN with 0 permanently
+
+dfReturnsScore2 = dfReturnsScore[(dfReturnsScore['Score(1)'] > 0.5) | (dfReturnsScore['Score(1)'] < -0.5)]
+
+```
+
+
+
+correlation coefficient is 0.044.(0)
+
+This means headlines alone do not have any predictive value for stock returns.
+
+
+- The accuracy of the VADER sentiment analyser is nowhere near perfect.
+
+
+As mentioned earlier, already know that these sentiment output have huge variance and we rely on large numbers to squeeze out a slightly useful mean output value.
+
+if want to improve on this, the solution will be to build your own sentiment analyser by training it on the type of data you are testing on.
+
